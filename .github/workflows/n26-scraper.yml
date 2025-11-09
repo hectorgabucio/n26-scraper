@@ -1,0 +1,51 @@
+name: N26 Scraper
+
+on:
+  # schedule:
+  #   # Run every 2 hours
+  #   - cron: '0 */2 * * *'
+  workflow_dispatch: # Allow manual triggers from GitHub UI
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # Timeout after 10 minutes
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25
+      
+      - name: Cache and install Chrome dependencies
+        id: cache-apt
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: chromium-browser chromium-chromedriver ca-certificates fonts-liberation libappindicator3-1 libasound2t64 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc-s1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils
+          version: 1.0
+      
+      - name: Debug APT cache status
+        if: always()
+        run: |
+          echo "Cache hit: ${{ steps.cache-apt.outputs.cache-hit }}"
+          echo "Installed packages: ${{ steps.cache-apt.outputs.package-version-list }}"
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Build scraper
+        run: go build -o n26-scraper .
+      
+      - name: Run N26 scraper
+        env:
+          N26_EMAIL: ${{ secrets.N26_EMAIL }}
+          N26_PASSWORD: ${{ secrets.N26_PASSWORD }}
+          N26_ACCOUNT_ID: ${{ secrets.N26_ACCOUNT_ID }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          DB_CONN: ${{ secrets.DB_CONN }}
+        run: |
+          ./n26-scraper
+

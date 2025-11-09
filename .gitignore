@@ -1,0 +1,11 @@
+.env
+downloads/
+*.csv
+*.log
+chromedp-*
+n26-scrapper
+cookie.txt
+n26-scraper
+statements.json
+chrome-data/
+*.pdf

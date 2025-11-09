@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS cookies (
+    id SERIAL PRIMARY KEY,
+    cookie_value TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cookies_updated_at ON cookies(updated_at DESC);
+
