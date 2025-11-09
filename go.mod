@@ -1,4 +1,4 @@
-module n26-scrapper
+module n26-scraper
 
 go 1.25
 

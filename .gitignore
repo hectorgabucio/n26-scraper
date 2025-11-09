@@ -3,7 +3,7 @@ downloads/
 *.csv
 *.log
 chromedp-*
-n26-scrapper
+n26-scraper
 cookie.txt
 n26-scraper
 statements.json

@@ -25,7 +25,7 @@ A Go program that automates logging into your N26 account, downloading PDF trans
 1. **Clone this repository:**
    ```bash
    git clone <your-repo-url>
-   cd n26-scrapper
+   cd n26-scraper
    ```
 
 2. **Install dependencies:**
@@ -177,7 +177,7 @@ This project includes a GitHub Actions workflow that can be triggered manually o
 ## Project Structure
 
 ```
-n26-scrapper/
+n26-scraper/
 ├── main.go                    # Main application logic
 ├── cookie_repository.go        # Cookie storage repository
 ├── statement_repository.go     # Statement tracking repository
